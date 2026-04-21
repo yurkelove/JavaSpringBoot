@@ -1,20 +1,66 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.User;
+import com.example.demo.repository.UserRepository;
 
 @Service
 public class UserService {
 
-    public List<User> helloWorld() {
-        return List.of(
-                new User(1L, "Yura", "yurkelove28@gmail.com", LocalDate.of(1996, 3, 28), 30),
-                new User(2L, "Nastya", "wild28@gmail.com", LocalDate.of(1993, 3, 28), 32),
-                new User(3L, "David", "david28@gmail.com", LocalDate.of(2023, 3, 28), 3));
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User create(User user) {
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isPresent()) {
+            throw new IllegalStateException("Email already exists!");
+        }
+        user.setAge(Period.between(user.getBirth(), LocalDate.now()).getYears());
+        return userRepository.save(user);
+    }
+
+    public void delete(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalStateException("user with id: " + id + "not found");
+        }
+        userRepository.deleteById(id);
+    }
+
+    public void update(Long id, String email, String name) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalStateException("user with id: " + id + "not found");
+        }
+
+        User user = optionalUser.get();
+
+        if (email != null && !email.equals(user.getEmail())) {
+            Optional<User> foundByEmail = userRepository.findByEmail(email);
+            if (foundByEmail.isPresent()) {
+                throw new IllegalStateException("Email already exists!");
+            }
+            user.setEmail(email);
+        }
+
+        if (name != null && !name.equals(user.getName())) {
+            user.setName(name);
+        }
+
+        userRepository.save(user);
     }
 
 }

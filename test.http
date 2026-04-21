@@ -1,0 +1,18 @@
+### Создать пользователя
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+    "name": "Юрий",
+    "email": "yurkelove@gmail.com",
+    "birth": "1996-03-28",
+    "age": null
+}
+
+
+###
+DELETE http://localhost:8080/api/users/2
+
+
+###
+PUT http://localhost:8080/api/users/1?email=newNasti@gmail.com

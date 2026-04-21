@@ -1,9 +1,17 @@
 package com.example.demo.repository;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // @Column(name = "name"); //Если имена не совпадают
     private String name;
     private String email;
     private LocalDate birth;
@@ -60,4 +68,8 @@ public class User {
         this.age = age;
     }
 
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", birth=" + birth + ", age=" + age + "]";
+    }
 }
