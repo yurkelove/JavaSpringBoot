@@ -50,5 +50,19 @@ public class Main {
             case 1, 2, 3, 4, 5 -> "This is a weekday";
             default -> "Default";
         };
+
+        // Ternary
+        int age = 20;
+        String info = age >= 18 ? "adult" : "teen";
+
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                continue; // пропустить четные числа
+            }
+            if (i < 7) {
+                break; // остановит цикла, если число больше 7
+            }
+        }
+
     }
 }

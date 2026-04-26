@@ -1,3 +1,5 @@
+package com.example.demo.javaClean.strings;
+
 import java.util.Scanner;
 
 public class Main {
